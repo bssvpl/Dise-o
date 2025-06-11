@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Mis Cursos - Plataforma Educativa</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/styles.css}">
+</head>
+<body>
+    <div th:replace="fragments/navbar :: navbar"></div>
+
+    <main class="cursos-container">
+        <h1 class="cursos-titulo">Mis Cursos</h1>
+        <div class="cursos-grid">
+            <div th:if="${#lists.isEmpty(cursos)}" class="no-cursos">
+                <i class="fas fa-book-open"></i>
+                <h3>No tienes cursos inscritos</h3>
+                <p>Explora nuestra oferta de cursos y comienza tu aprendizaje</p>
+                <a href="/cursos" class="btn-explorar">Explorar Cursos</a>
+            </div>
+            <div th:each="curso : ${cursos}" class="curso-card" th:style="'background-color: ' + ${curso.color}">
+                <i th:class="${curso.icono}"></i>
+                <h3 th:text="${curso.nombre}">Nombre del Curso</h3>
+                <p th:text="${curso.descripcion}">Descripción del curso</p>
+                <div class="curso-progreso">
+                    <div class="progreso-bar" th:style="'width: ' + ${curso.progreso} + '%'"></div>
+                    <span th:text="${curso.progreso} + '% Completado'">0% Completado</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="fragments/footer :: footer"></div>
+</body>
+</html> 

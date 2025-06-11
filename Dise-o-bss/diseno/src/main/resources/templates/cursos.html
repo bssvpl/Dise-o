@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cursos - Plataforma Educativa</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/styles.css}">
+</head>
+<body>
+    <div th:replace="fragments/navbar :: navbar"></div>
+
+    <main class="cursos-container">
+        <h1 class="cursos-titulo">Nuestros Cursos</h1>
+        <div class="cursos-grid">
+            <!-- Literatura -->
+            <div class="curso-card" style="background-color: #FFB5C2;">
+                <i class="fas fa-book-open"></i>
+                <h3>Literatura Universal</h3>
+                <p>Explora las obras más importantes de la literatura mundial</p>
+            </div>
+            <div class="curso-card" style="background-color: #FFC8B5;">
+                <i class="fas fa-pen-fancy"></i>
+                <h3>Escritura Creativa</h3>
+                <p>Desarrolla tu talento para la escritura y la narrativa</p>
+            </div>
+
+            <!-- Lenguaje -->
+            <div class="curso-card" style="background-color: #B5EAD7;">
+                <i class="fas fa-language"></i>
+                <h3>Gramática Avanzada</h3>
+                <p>Domina las reglas gramaticales y la estructura del lenguaje</p>
+            </div>
+            <div class="curso-card" style="background-color: #C7CEEA;">
+                <i class="fas fa-comments"></i>
+                <h3>Comunicación Efectiva</h3>
+                <p>Aprende técnicas para una comunicación clara y efectiva</p>
+            </div>
+
+            <!-- Historia -->
+            <div class="curso-card" style="background-color: #E2F0CB;">
+                <i class="fas fa-landmark"></i>
+                <h3>Historia Antigua</h3>
+                <p>Descubre las civilizaciones antiguas y sus legados</p>
+            </div>
+            <div class="curso-card" style="background-color: #FFDAC1;">
+                <i class="fas fa-globe-americas"></i>
+                <h3>Historia Moderna</h3>
+                <p>Explora los eventos que dieron forma al mundo actual</p>
+            </div>
+
+            <!-- Cursos Adicionales -->
+            <div class="curso-card" style="background-color: #B5EAD7;">
+                <i class="fas fa-calculator"></i>
+                <h3>Matemáticas</h3>
+                <p>Desarrolla habilidades matemáticas avanzadas</p>
+            </div>
+            <div class="curso-card" style="background-color: #C7CEEA;">
+                <i class="fas fa-flask"></i>
+                <h3>Ciencias</h3>
+                <p>Explora los principios fundamentales de la ciencia</p>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="fragments/footer :: footer"></div>
+</body>
+</html> 
