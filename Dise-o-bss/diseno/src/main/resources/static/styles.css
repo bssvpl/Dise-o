@@ -159,26 +159,17 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     align-items: flex-start;
+    flex-wrap: wrap; /* <-- Asegura que no se superpongan */
 }
 
 .content {
-    flex: 1;
+    flex: 1 1 350px;
     max-width: 800px;
+    min-width: 300px; /* <-- Evita que se haga demasiado pequeño */
+    margin-right: 2rem;
 }
 
-.image-container {
-    flex: 0 0 400px;
-    position: static;
-    margin-top: 2rem;
-}
-
-.story-image {
-    width: 100%;
-    height: auto;
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow);
-    display: block;
-}
+/* Eliminar reglas específicas de .image-container y .story-image y story-image-container */
 
 /* Cuando el panel de accesibilidad está abierto */
 .accessibility-panel.open ~ .main-flex .image-container {
@@ -204,10 +195,19 @@ body {
         max-width: 500px;
         margin: 2rem auto;
     }
+    .content {
+        margin-right: 0;
+    }
+    .accessibility-panel {
+        margin-right: 0;
+        margin-top: 1rem;
+    }
 }
 
 .accessibility-panel {
     width: 320px;
+    min-width: 260px; /* <-- Evita que se haga demasiado pequeño */
+    max-width: 100%;
     background: #f4f6fb;
     border: 1px solid var(--divider);
     padding: 2rem 1.5rem;
@@ -218,6 +218,7 @@ body {
     margin-bottom: 2.5rem;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
     color: var(--text-color);
+    overflow: auto; /* <-- Si el contenido es mucho, agrega scroll */
 }
 
 .accessibility-panel.active {
@@ -809,4 +810,213 @@ h1 {
     font-size: 0.9rem;
     margin-top: 0.5rem;
     color: var(--text-color);
+}
+
+/* Nuevos estilos para cursos */
+.cursos-section {
+    margin-bottom: 3rem;
+}
+
+.cursos-section h2 {
+    color: var(--text-color);
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.curso-info {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin: 1rem 0;
+}
+
+.curso-categoria,
+.curso-nivel,
+.curso-duracion {
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+.curso-acciones {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    align-items: center;
+}
+
+.btn-inscribir,
+.btn-continuar,
+.btn-desinscribir {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: white;
+    text-decoration: none;
+}
+
+.btn-inscribir:hover,
+.btn-continuar:hover,
+.btn-desinscribir:hover {
+    transform: translateY(-2px);
+}
+
+.btn-inscribir {
+    background-color: #3498db;
+}
+
+.btn-inscribir:hover {
+    background-color: #2980b9;
+}
+
+.btn-continuar {
+    background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%);
+    color: #fff;
+    box-shadow: 0 4px 14px 0 rgba(67, 233, 123, 0.15);
+    font-size: 1.05rem;
+    border-radius: 30px;
+    border: none;
+    padding: 0.8rem 2rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.btn-continuar i {
+    color: #fff;
+}
+
+.btn-continuar:hover {
+    background: linear-gradient(90deg, #38f9d7 0%, #43e97b 100%);
+    box-shadow: 0 6px 20px 0 rgba(67, 233, 123, 0.25);
+    transform: translateY(-3px) scale(1.04);
+}
+
+.btn-desinscribir {
+    background: linear-gradient(90deg, #ff5858 0%, #f857a6 100%);
+    color: #fff;
+    box-shadow: 0 4px 14px 0 rgba(255, 88, 88, 0.15);
+    font-size: 1.05rem;
+    border-radius: 30px;
+    border: none;
+    padding: 0.8rem 2rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.btn-desinscribir i {
+    color: #fff;
+}
+
+.btn-desinscribir:hover {
+    background: linear-gradient(90deg, #f857a6 0%, #ff5858 100%);
+    box-shadow: 0 6px 20px 0 rgba(255, 88, 88, 0.25);
+    transform: translateY(-3px) scale(1.04);
+}
+
+.curso-card.inscrito {
+    border: 2px solid var(--primary-color);
+}
+
+.alert {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: var(--border-radius);
+    text-align: center;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Estilos para la página de contenido del curso */
+.curso-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background-color: var(--bg-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+
+.curso-header h1 {
+    color: var(--text-color);
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.curso-info-header {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.curso-info-header .curso-categoria,
+.curso-info-header .curso-nivel,
+.curso-info-header .curso-duracion {
+    background-color: var(--accent-color);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+/* Responsive para cursos */
+@media (max-width: 768px) {
+    .cursos-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .curso-info {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .curso-acciones {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .btn-inscribir,
+    .btn-continuar,
+    .btn-desinscribir {
+        width: auto;
+        min-width: 120px;
+        max-width: 180px;
+        justify-content: center;
+        padding: 0.4rem 0.7rem;
+        font-size: 0.95rem;
+        margin-bottom: 0.5rem;
+        box-sizing: border-box;
+    }
+    
+    .curso-header h1 {
+        font-size: 2rem;
+    }
+    
+    .curso-info-header {
+        flex-direction: column;
+        align-items: center;
+    }
 }

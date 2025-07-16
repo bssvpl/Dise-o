@@ -11,54 +11,60 @@
 
     <main class="cursos-container">
         <h1 class="cursos-titulo">Nuestros Cursos</h1>
-        <div class="cursos-grid">
-            <!-- Literatura -->
-            <div class="curso-card" style="background-color: #FFB5C2;">
-                <i class="fas fa-book-open"></i>
-                <h3>Literatura Universal</h3>
-                <p>Explora las obras más importantes de la literatura mundial</p>
+        
+        <!-- Mensajes de éxito o error -->
+        <div th:if="${mensaje}" class="alert alert-success" th:text="${mensaje}"></div>
+        <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+        
+        <!-- Cursos Disponibles -->
+        <section class="cursos-section">
+            <h2>Cursos Disponibles</h2>
+            <div class="cursos-grid">
+                <div th:each="curso : ${cursosDisponibles}" class="curso-card" th:style="'background-color: ' + ${curso.colorFondo}">
+                    <i th:class="${curso.icono}"></i>
+                    <h3 th:text="${curso.nombre}">Nombre del Curso</h3>
+                    <p th:text="${curso.descripcion}">Descripción del curso</p>
+                    <div class="curso-info">
+                        <span class="curso-categoria" th:text="${curso.categoria}">Categoría</span>
+                        <span class="curso-nivel" th:text="${curso.nivelDificultad}">Nivel</span>
+                        <span class="curso-duracion" th:text="${curso.duracionHoras} + ' horas'">Duración</span>
+                    </div>
+                    <form th:action="@{/inscribir-curso/{cursoId}(cursoId=${curso.id})}" method="post" style="display: inline;">
+                        <button type="submit" class="btn-inscribir">
+                            <i class="fas fa-plus"></i> Inscribirse
+                        </button>
+                    </form>
+                </div>
             </div>
-            <div class="curso-card" style="background-color: #FFC8B5;">
-                <i class="fas fa-pen-fancy"></i>
-                <h3>Escritura Creativa</h3>
-                <p>Desarrolla tu talento para la escritura y la narrativa</p>
+        </section>
+        
+        <!-- Cursos Inscritos -->
+        <section class="cursos-section" th:if="${!cursosInscritos.isEmpty()}">
+            <h2>Mis Cursos Inscritos</h2>
+            <div class="cursos-grid">
+                <div th:each="curso : ${cursosInscritos}" class="curso-card inscrito" th:style="'background-color: ' + ${curso.colorFondo}">
+                    <i th:class="${curso.icono}"></i>
+                    <h3 th:text="${curso.nombre}">Nombre del Curso</h3>
+                    <p th:text="${curso.descripcion}">Descripción del curso</p>
+                    <div class="curso-info">
+                        <span class="curso-categoria" th:text="${curso.categoria}">Categoría</span>
+                        <span class="curso-nivel" th:text="${curso.nivelDificultad}">Nivel</span>
+                        <span class="curso-duracion" th:text="${curso.duracionHoras} + ' horas'">Duración</span>
+                    </div>
+                    <div class="curso-acciones">
+                        <a th:href="@{/curso/{cursoId}(cursoId=${curso.id})}" class="btn-ver-curso">
+                            <i class="fas fa-play"></i> Continuar
+                        </a>
+                    </div>
+                </div>
             </div>
-
-            <!-- Lenguaje -->
-            <div class="curso-card" style="background-color: #B5EAD7;">
-                <i class="fas fa-language"></i>
-                <h3>Gramática Avanzada</h3>
-                <p>Domina las reglas gramaticales y la estructura del lenguaje</p>
-            </div>
-            <div class="curso-card" style="background-color: #C7CEEA;">
-                <i class="fas fa-comments"></i>
-                <h3>Comunicación Efectiva</h3>
-                <p>Aprende técnicas para una comunicación clara y efectiva</p>
-            </div>
-
-            <!-- Historia -->
-            <div class="curso-card" style="background-color: #E2F0CB;">
-                <i class="fas fa-landmark"></i>
-                <h3>Historia Antigua</h3>
-                <p>Descubre las civilizaciones antiguas y sus legados</p>
-            </div>
-            <div class="curso-card" style="background-color: #FFDAC1;">
-                <i class="fas fa-globe-americas"></i>
-                <h3>Historia Moderna</h3>
-                <p>Explora los eventos que dieron forma al mundo actual</p>
-            </div>
-
-            <!-- Cursos Adicionales -->
-            <div class="curso-card" style="background-color: #B5EAD7;">
-                <i class="fas fa-calculator"></i>
-                <h3>Matemáticas</h3>
-                <p>Desarrolla habilidades matemáticas avanzadas</p>
-            </div>
-            <div class="curso-card" style="background-color: #C7CEEA;">
-                <i class="fas fa-flask"></i>
-                <h3>Ciencias</h3>
-                <p>Explora los principios fundamentales de la ciencia</p>
-            </div>
+        </section>
+        
+        <!-- Mensaje cuando no hay cursos disponibles -->
+        <div th:if="${cursosDisponibles.isEmpty() && cursosInscritos.isEmpty()}" class="no-cursos">
+            <i class="fas fa-book-open"></i>
+            <h3>No hay cursos disponibles en este momento</h3>
+            <p>Vuelve más tarde para explorar nuevos cursos</p>
         </div>
     </main>
 

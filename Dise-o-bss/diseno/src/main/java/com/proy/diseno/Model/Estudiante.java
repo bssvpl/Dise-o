@@ -1,10 +1,8 @@
 package com.proy.diseno.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "estudiantes")
@@ -19,6 +17,14 @@ public class Estudiante {
     private int edad;
     private String username;
     private String password;
+    
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "estudiante_cursos",
+        joinColumns = @JoinColumn(name = "estudiante_id"),
+        inverseJoinColumns = @JoinColumn(name = "curso_id")
+    )
+    private Set<Curso> cursosInscritos = new HashSet<>();
     
     // Getters y Setters
     public Long getId() {
@@ -67,5 +73,32 @@ public class Estudiante {
     
     public void setPassword(String password) {
         this.password = password;
+    }
+    
+    public Set<Curso> getCursosInscritos() {
+        return cursosInscritos;
+    }
+    
+    public void setCursosInscritos(Set<Curso> cursosInscritos) {
+        this.cursosInscritos = cursosInscritos;
+    }
+    
+    // Métodos de conveniencia
+    public void agregarCurso(Curso curso) {
+        if (curso != null && !this.cursosInscritos.contains(curso)) {
+            this.cursosInscritos.add(curso);
+            if (!curso.getEstudiantes().contains(this)) {
+                curso.getEstudiantes().add(this);
+            }
+        }
+    }
+    
+    public void removerCurso(Curso curso) {
+        if (curso != null && this.cursosInscritos.contains(curso)) {
+            this.cursosInscritos.remove(curso);
+            if (curso.getEstudiantes().contains(this)) {
+                curso.getEstudiantes().remove(this);
+            }
+        }
     }
 } 

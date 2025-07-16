@@ -11,6 +11,11 @@
 
     <main class="cursos-container">
         <h1 class="cursos-titulo">Mis Cursos</h1>
+        
+        <!-- Mensajes de éxito o error -->
+        <div th:if="${mensaje}" class="alert alert-success" th:text="${mensaje}"></div>
+        <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+        
         <div class="cursos-grid">
             <div th:if="${#lists.isEmpty(cursos)}" class="no-cursos">
                 <i class="fas fa-book-open"></i>
@@ -18,13 +23,29 @@
                 <p>Explora nuestra oferta de cursos y comienza tu aprendizaje</p>
                 <a href="/cursos" class="btn-explorar">Explorar Cursos</a>
             </div>
-            <div th:each="curso : ${cursos}" class="curso-card" th:style="'background-color: ' + ${curso.color}">
+            
+            <div th:each="curso : ${cursos}" class="curso-card" th:attr="data-curso-id=${curso.id}">
                 <i th:class="${curso.icono}"></i>
                 <h3 th:text="${curso.nombre}">Nombre del Curso</h3>
                 <p th:text="${curso.descripcion}">Descripción del curso</p>
+                <div class="curso-info">
+                    <span class="curso-categoria" th:text="${curso.categoria}">Categoría</span>
+                    <span class="curso-nivel" th:text="${curso.nivelDificultad}">Nivel</span>
+                    <span class="curso-duracion" th:text="${curso.duracionHoras} + ' horas'">Duración</span>
+                </div>
                 <div class="curso-progreso">
-                    <div class="progreso-bar" th:style="'width: ' + ${curso.progreso} + '%'"></div>
-                    <span th:text="${curso.progreso} + '% Completado'">0% Completado</span>
+                    <div class="progreso-bar"></div>
+                    <span class="progreso-texto"></span>
+                </div>
+                <div class="curso-acciones">
+                    <a th:href="@{/curso/{cursoId}(cursoId=${curso.id})}" class="btn-continuar">
+                        <i class="fas fa-play"></i> Continuar
+                    </a>
+                    <form th:action="@{/desinscribir-curso/{cursoId}(cursoId=${curso.id})}" method="post" style="display: inline;">
+                        <button type="submit" class="btn-desinscribir" onclick="return confirm('¿Estás seguro de que quieres desinscribirte de este curso?')">
+                            <i class="fas fa-times"></i> Desinscribirse
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>

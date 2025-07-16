@@ -18,26 +18,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const themeLightBtn = document.getElementById('theme-light');
     const themeDarkBtn = document.getElementById('theme-dark');
 
-    // Variable para controlar el estado de la lectura
-    let isReading = false;
-
-    // Asegurar que el panel comience oculto
-    accessibilityPanel.classList.remove('active');
-    mainContent.classList.remove('panel-active');
-
-    // Mostrar/ocultar panel de accesibilidad
-    if (accessibilityBtn && accessibilityPanel && mainContent) {
-        accessibilityBtn.addEventListener('click', () => {
-            const isActive = accessibilityPanel.classList.contains('active');
-            if (isActive) {
-                accessibilityPanel.classList.remove('active');
-                mainContent.classList.remove('panel-active');
-            } else {
-                accessibilityPanel.classList.add('active');
-                mainContent.classList.add('panel-active');
-            }
-        });
+    // Función para actualizar la visibilidad de la imagen
+    function updateImageVisibility() {
+        if (accessibilityPanel.classList.contains('active')) {
+            // storyImage.style.display = 'none'; // Eliminar cualquier referencia o lógica relacionada con story-image-container
+        } else {
+            // storyImage.style.display = 'block'; // Eliminar cualquier referencia o lógica relacionada con story-image-container
+        }
     }
+
+    // Al cargar la página, asegúrate de que la visibilidad sea la correcta
+    updateImageVisibility();
+
+    // Al hacer click en el botón de accesibilidad, alterna el panel y la imagen
+    accessibilityBtn.addEventListener('click', () => {
+        accessibilityPanel.classList.toggle('active');
+        updateImageVisibility();
+    });
 
     // Control de tipo de fuente
     if (fontFamilySelect && textContent && h1Element) {
@@ -167,6 +164,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Cargar preferencias al iniciar
     loadPreferences();
 
+    // Si el panel ya está activo al cargar (por preferencias), oculta la imagen
+    // if (accessibilityPanel.classList.contains('active') && storyImage) { // Eliminar cualquier referencia o lógica relacionada con story-image-container
+    //     storyImage.style.display = 'none';
+    // } else if (storyImage) { // Eliminar cualquier referencia o lógica relacionada con story-image-container
+    //     storyImage.style.display = 'block';
+    // }
+
     // Inicialmente truncar el texto
     mainTextContent.classList.add('truncated');
     readMoreBtn.style.display = 'inline-block';
@@ -195,24 +199,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- MODO FOCO ROBUSTO Y FUNCIONAL ---
     const focusModeInput = document.getElementById('focus-mode');
-    if (focusModeInput && mainContent) {
-        focusModeInput.addEventListener('change', (e) => {
-            const focusables = Array.from(mainContent.querySelectorAll('h1, p'));
-            if (e.target.checked) {
-                mainContent.classList.add('focus-mode-active');
-                focusables.forEach(el => {
-                    el.addEventListener('mouseenter', handleFocus);
-                    el.addEventListener('mouseleave', removeFocus);
-                });
-            } else {
-                mainContent.classList.remove('focus-mode-active');
-                focusables.forEach(el => {
-                    el.classList.remove('focused');
-                    el.removeEventListener('mouseenter', handleFocus);
-                    el.removeEventListener('mouseleave', removeFocus);
-                });
-            }
-        });
+    if (focusModeInput) {
+        // Detectar el contenedor principal de texto
+        let focusContainer = document.querySelector('.content');
+        // Si estamos en la página de curso, usar .text-content si existe
+        if (document.querySelector('.text-content')) {
+            focusContainer = document.querySelector('.text-content');
+        }
+        if (focusContainer) {
+            focusModeInput.addEventListener('change', (e) => {
+                const focusables = Array.from(focusContainer.querySelectorAll('h1, p'));
+                if (e.target.checked) {
+                    focusContainer.classList.add('focus-mode-active');
+                    focusables.forEach(el => {
+                        el.addEventListener('mouseenter', handleFocus);
+                        el.addEventListener('mouseleave', removeFocus);
+                    });
+                } else {
+                    focusContainer.classList.remove('focus-mode-active');
+                    focusables.forEach(el => {
+                        el.classList.remove('focused');
+                        el.removeEventListener('mouseenter', handleFocus);
+                        el.removeEventListener('mouseleave', removeFocus);
+                    });
+                }
+            });
+        }
     }
 
     function handleFocus(e) {
@@ -225,4 +237,21 @@ document.addEventListener('DOMContentLoaded', () => {
         e.target.classList.remove('focused');
         e.target.style.textDecoration = '';
     }
+
+    // Progreso dinámico en mis-cursos
+    document.querySelectorAll('.curso-card[data-curso-id]').forEach(function(card) {
+        const cursoId = card.getAttribute('data-curso-id');
+        const progresoBar = card.querySelector('.progreso-bar');
+        const progresoTexto = card.querySelector('.progreso-texto');
+        if (progresoBar && progresoTexto) {
+            const leido = localStorage.getItem('curso_leido_' + cursoId) === 'true';
+            if (leido) {
+                progresoBar.style.width = '100%';
+                progresoTexto.textContent = '100% Completado';
+            } else {
+                progresoBar.style.width = '0%';
+                progresoTexto.textContent = '0% Completado';
+            }
+        }
+    });
 });

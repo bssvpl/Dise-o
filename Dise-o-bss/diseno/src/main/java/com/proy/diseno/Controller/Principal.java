@@ -11,11 +11,6 @@ public class Principal {
         return "index";
     }
 
-    @GetMapping("/cursos")
-    public String cursos() {
-        return "cursos";
-    }
-
     @GetMapping("/prueba")
     @ResponseBody
     public String prueba() {
