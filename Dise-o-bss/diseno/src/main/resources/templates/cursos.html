@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cursos - Plataforma Educativa</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/styles.css}">
+</head>
+<body>
+    <div th:replace="fragments/navbar :: navbar"></div>
+
+    <main class="cursos-container">
+        <h1 class="cursos-titulo">Nuestros Cursos</h1>
+        
+        <!-- Mensajes de éxito o error -->
+        <div th:if="${mensaje}" class="alert alert-success" th:text="${mensaje}"></div>
+        <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+        
+        <!-- Cursos Disponibles -->
+        <section class="cursos-section">
+            <h2>Cursos Disponibles</h2>
+            <div class="cursos-grid">
+                <div th:each="curso : ${cursosDisponibles}" class="curso-card" th:style="'background-color: ' + ${curso.colorFondo}">
+                    <i th:class="${curso.icono}"></i>
+                    <h3 th:text="${curso.nombre}">Nombre del Curso</h3>
+                    <p th:text="${curso.descripcion}">Descripción del curso</p>
+                    <div class="curso-info">
+                        <span class="curso-categoria" th:text="${curso.categoria}">Categoría</span>
+                        <span class="curso-nivel" th:text="${curso.nivelDificultad}">Nivel</span>
+                        <span class="curso-duracion" th:text="${curso.duracionHoras} + ' horas'">Duración</span>
+                    </div>
+                    <form th:action="@{/inscribir-curso/{cursoId}(cursoId=${curso.id})}" method="post" style="display: inline;">
+                        <button type="submit" class="btn-inscribir">
+                            <i class="fas fa-plus"></i> Inscribirse
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Cursos Inscritos -->
+        <section class="cursos-section" th:if="${!cursosInscritos.isEmpty()}">
+            <h2>Mis Cursos Inscritos</h2>
+            <div class="cursos-grid">
+                <div th:each="curso : ${cursosInscritos}" class="curso-card inscrito" th:style="'background-color: ' + ${curso.colorFondo}">
+                    <i th:class="${curso.icono}"></i>
+                    <h3 th:text="${curso.nombre}">Nombre del Curso</h3>
+                    <p th:text="${curso.descripcion}">Descripción del curso</p>
+                    <div class="curso-info">
+                        <span class="curso-categoria" th:text="${curso.categoria}">Categoría</span>
+                        <span class="curso-nivel" th:text="${curso.nivelDificultad}">Nivel</span>
+                        <span class="curso-duracion" th:text="${curso.duracionHoras} + ' horas'">Duración</span>
+                    </div>
+                    <div class="curso-acciones">
+                        <a th:href="@{/curso/{cursoId}(cursoId=${curso.id})}" class="btn-ver-curso">
+                            <i class="fas fa-play"></i> Continuar
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Mensaje cuando no hay cursos disponibles -->
+        <div th:if="${cursosDisponibles.isEmpty() && cursosInscritos.isEmpty()}" class="no-cursos">
+            <i class="fas fa-book-open"></i>
+            <h3>No hay cursos disponibles en este momento</h3>
+            <p>Vuelve más tarde para explorar nuevos cursos</p>
+        </div>
+    </main>
+
+    <div th:replace="fragments/footer :: footer"></div>
+</body>
+</html> 
